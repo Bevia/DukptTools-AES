@@ -15,8 +15,8 @@ class HSMClient {
             mode = AesMode.AES_128_ECB // or AES_256_CBC
         )
 
-        //val allPassed = DukptTestVectors.validateAll()
-        //println(if (allPassed) "✅ All tests passed!" else "❌ Some tests failed.")
+        val allPassed = DukptTestVectors.validateAll()
+        println(if (allPassed) "✅ All tests passed!" else "❌ Some tests failed.")
 
     }
 

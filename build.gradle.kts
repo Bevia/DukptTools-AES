@@ -26,6 +26,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
     implementation("org.bouncycastle:bcprov-jdk15on:1.70") // Adjust version as needed
+
 }
 
 kotlin {
@@ -34,6 +35,23 @@ kotlin {
     }
 }
 
+springBoot {
+    mainClass.set("org.corebaseit.dukptksnkeygenerator.DukptApplicationKt")
+}
+
+tasks.bootJar {
+    archiveClassifier.set("boot")
+    manifest {
+        attributes["Start-Class"] = "org.corebaseit.dukptksnkeygenerator.DukptApplicationKt"
+    }
+    enabled = true
+}
+
+tasks.jar {
+    enabled = false
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+

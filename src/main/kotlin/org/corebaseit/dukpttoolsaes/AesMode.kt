@@ -1,4 +1,6 @@
 package org.corebaseit.dukpttoolsaes
 
-class AesMode {
+enum class AesMode {
+    AES_128_ECB,
+    AES_256_CBC
 }

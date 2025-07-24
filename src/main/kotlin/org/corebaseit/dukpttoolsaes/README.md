@@ -3,7 +3,10 @@ Absolutely, Vincent! Here's a comprehensive `README.md` file summarizing your AE
 ```markdown
 # 🔐 AES-DUKPT Simulator
 
-This Kotlin-based simulator demonstrates how to perform secure PIN encryption and decryption using **AES-DUKPT Format 4**, compliant with [ANSI X9.24-3]. It's designed for high-assurance financial environments using **AES-256 + CBC mode** and supports realistic key derivation and PIN block handling.
+This Kotlin-based simulator demonstrates how to perform secure PIN encryption and decryption 
+using **AES-DUKPT Format 4**, compliant with [ANSI X9.24-3]. It's designed for high-assurance 
+financial environments using **AES-256 + CBC mode** and supports realistic key derivation and PIN block 
+handling.
 
 ---
 

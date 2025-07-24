@@ -5,29 +5,32 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-class AesTerminalSimulator(private val ipek: ByteArray, private var ksn: ByteArray) {
+class AesTerminalSimulator(private val ipek: ByteArray, private var ksn: ByteArray,  var testMode: Boolean = false) {
 
     fun encryptPin(
         pin: String,
         mode: AesMode,
         pan: String = "",
+        ivOverride: ByteArray? = null
     ): Triple<ByteArray, ByteArray, ByteArray?> {
         val sessionKey = deriveSessionKey(ipek, ksn)
+        val iv = if (testMode) ByteArray(16) { 0 } else ByteArray(16).apply { SecureRandom().nextBytes(this) }
 
         return when (mode) {
             AesMode.AES_128_ECB -> {
                 val pinBlock = generatePinBlockEcb(pin, pan)
                 val encrypted = aesEncryptEcb(sessionKey, pinBlock)
-                Triple(encrypted, ksn, null) // no IV for ECB
+                Triple(encrypted, ksn, null)
             }
             AesMode.AES_256_CBC -> {
                 val pinBlock = generatePinBlockCbc(pin)
-                val iv = ByteArray(16).apply { SecureRandom().nextBytes(this) }
+                val iv = ivOverride ?: ByteArray(16).apply { SecureRandom().nextBytes(this) }
                 val encrypted = aesEncryptCbc(sessionKey, iv, pinBlock)
                 Triple(encrypted, ksn, iv)
             }
         }
     }
+
 
     private fun deriveSessionKey(ipek: ByteArray, ksn: ByteArray): ByteArray {
         return DukptAES.deriveIPEK(ipek, ksn)
@@ -40,9 +43,15 @@ class AesTerminalSimulator(private val ipek: ByteArray, private var ksn: ByteArr
         for (i in 2 until 14) {
             block[i] = if (i - 2 < pin.length) pin[i - 2].digitToInt().toByte() else 0x0F
         }
-        val random = SecureRandom()
-        block[14] = random.nextInt(256).toByte()
-        block[15] = random.nextInt(256).toByte()
+        if (testMode) {
+            block[14] = 0x00
+            block[15] = 0x00
+        } else {
+            val random = SecureRandom()
+            block[14] = random.nextInt(256).toByte()
+            block[15] = random.nextInt(256).toByte()
+        }
+
         return block
     }
 
@@ -53,11 +62,17 @@ class AesTerminalSimulator(private val ipek: ByteArray, private var ksn: ByteArr
         for (i in 2 until 14) {
             block[i] = if (i - 2 < pin.length) pin[i - 2].digitToInt().toByte() else 0x0F
         }
-        val random = SecureRandom()
-        block[14] = random.nextInt(256).toByte()
-        block[15] = random.nextInt(256).toByte()
+        if (testMode) {
+            block[14] = 0x00
+            block[15] = 0x00
+        } else {
+            val random = SecureRandom()
+            block[14] = random.nextInt(256).toByte()
+            block[15] = random.nextInt(256).toByte()
+        }
         return block
     }
+
 
     private fun aesEncryptEcb(key: ByteArray, data: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("AES/ECB/NoPadding")

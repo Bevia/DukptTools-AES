@@ -1,0 +1,10 @@
+[
+  {
+    "bdk": "0123456789ABCDEFFEDCBA9876543210",
+    "ksn": "FFFF9876543210E00000000000000000",
+    "expectedIpek": "9E9A8F275E612386E3F22C10CEE59CE9",
+    "pin": "1234",
+    "pan": "4532111122223333",
+    "expectedEncryptedPin": "94cad288c71da94aaf0b902ba30b67667db8541728901ccabf9a07e96944fbab"
+  }
+]

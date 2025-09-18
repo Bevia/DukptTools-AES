@@ -31,6 +31,18 @@ object DukptTestVectors {
         }
     }
 
+    /**
+     * Validates all DUKPT test vectors by verifying the derived IPEK and encrypted PIN
+     * against the expected values for each test vector.
+     *
+     * Iterates through the list of test vectors, derives the IPEK using the provided BDK
+     * and KSN, and compares it with the expected IPEK. Subsequently, encrypts the PIN
+     * using AES-256-CBC with a fixed initialization vector (IV) and compares the result
+     * with the expected encrypted PIN. Outputs the validation results to the console and
+     * determines whether all tests passed.
+     *
+     * @return true if all test vectors pass validation; false if any test vector fails.
+     */
     fun validateAll(): Boolean {
         var allPassed = true
 
